@@ -43,5 +43,5 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: ./dist
+        source: dist/
         target: /home/admin.hangngachinhhang.com/
