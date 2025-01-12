@@ -33,7 +33,7 @@ jobs:
 
     # Liệt kê các file sau khi build để kiểm tra sự tồn tại của dist/
     - name: List files after build
-      run: ls -la
+      run: ls -la dist
 
     # Copy file build lên server qua SSH
     - name: Deploy to Server
