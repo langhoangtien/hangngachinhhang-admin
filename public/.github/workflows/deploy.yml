@@ -31,21 +31,15 @@ jobs:
         VITE_API_URL: https://api.hangngachinhhang.com
       run: npm run build
 
-    # Liệt kê các file sau khi build để kiểm tra sự tồn tại của dist/
-    - name: List files after build
-      run: ls -la dist
-
-    - name: Download Artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: dist
     # Copy file build lên server qua SSH
-    - name: Deploy to Server
-      uses: appleboy/scp-action@v0.2.1
-      with:
-        host: ${{ secrets.VPS_IP }}
-        username: root
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        source: dist/
-        target: /home/admin.hangngachinhhang.com/
+    - name: Add SSH key to agent
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+
+    # Copy file build lên server qua SCP
+    - name: Deploy to Server using SCP
+      run: |
+        scp -r dist/ root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com/
