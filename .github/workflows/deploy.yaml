@@ -48,4 +48,4 @@ jobs:
 
       # Deploy artifacts to the VPS
       - name: Deploy to VPS
-        run: scp -r dist/ root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com
+        run: scp -r ./dist root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com
