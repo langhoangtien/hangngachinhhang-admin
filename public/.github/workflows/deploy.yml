@@ -43,4 +43,4 @@ jobs:
     # Copy file build lên server qua SCP
     - name: Deploy to Server using SCP
       run: |
-        scp -r /home/runner/work/hangngachinhhang-admin/hangngachinhhang-admin root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com/
+        scp -r /home/runner/work/hangngachinhhang-admin/hangngachinhhang-admin/dist root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com/

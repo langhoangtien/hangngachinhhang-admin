@@ -31,12 +31,6 @@ jobs:
           VITE_SERVER_URL: https://api.hangngachinhhang.com/api/v1
         run: npm run build
 
-      # Upload build artifacts
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist/
 
   deploy:
     name: Deploy to VPS
@@ -44,12 +38,6 @@ jobs:
     needs: build
 
     steps:
-      # Download build artifacts
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-
       # Set up SSH
       - name: Set up SSH
         run: |
