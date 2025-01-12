@@ -34,7 +34,7 @@ jobs:
         run: pwd
 
       - name: List files in the current directory
-        run: ls -la
+        run: ls -la /home/runner/work/hangngachinhhang-admin/hangngachinhhang-admin
 
 
   deploy:
