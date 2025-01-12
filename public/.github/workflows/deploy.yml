@@ -31,13 +31,17 @@ jobs:
         VITE_API_URL: https://api.hangngachinhhang.com
       run: npm run build
 
+    # Liệt kê các file sau khi build để kiểm tra sự tồn tại của dist/
+    - name: List files after build
+      run: ls -la
+
     # Copy file build lên server qua SSH
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.2.1
       with:
         host: ${{ secrets.VPS_IP }}
         username: root
-        key: ${{ secrets.SSH_PRIVATE_KEY}}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: ./dist
+        source: ./dist/
         target: /home/admin.hangngachinhhang.com/
