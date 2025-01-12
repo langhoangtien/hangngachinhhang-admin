@@ -31,6 +31,10 @@ jobs:
         VITE_API_URL: https://api.hangngachinhhang.com
       run: npm run build
 
+    - name: Download dist artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
     # Copy file build lên server qua SSH
     - name: Add SSH key to agent
       run: |
