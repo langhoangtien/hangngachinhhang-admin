@@ -35,6 +35,10 @@ jobs:
     - name: List files after build
       run: ls -la dist
 
+    - name: Download Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
     # Copy file build lên server qua SSH
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.2.1
@@ -43,5 +47,5 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: 'dist/*'
+        source: dist/
         target: /home/admin.hangngachinhhang.com/
