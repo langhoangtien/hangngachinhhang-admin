@@ -30,6 +30,11 @@ jobs:
         env:
           VITE_SERVER_URL: https://api.hangngachinhhang.com/api/v1
         run: npm run build
+      - name: Print current directory
+        run: pwd
+
+      - name: List files in the current directory
+        run: ls -la
 
 
   deploy:
@@ -48,4 +53,4 @@ jobs:
 
       # Deploy artifacts to the VPS
       - name: Deploy to VPS
-        run: scp -r ./dist root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com
+        run: scp -r ./dist/ root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com
