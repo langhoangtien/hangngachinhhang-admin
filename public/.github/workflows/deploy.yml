@@ -23,10 +23,12 @@ jobs:
 
     # Cài đặt dependencies
     - name: Install Dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     # Build project bằng Vite
     - name: Build Project
+      env:
+        VITE_API_URL: https://api.hangngachinhhang.com
       run: npm run build
 
     # Copy file build lên server qua SSH
