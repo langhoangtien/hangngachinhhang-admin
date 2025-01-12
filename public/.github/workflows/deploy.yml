@@ -13,13 +13,13 @@ jobs:
     steps:
     # Checkout code từ repo
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Thiết lập Node.js
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
 
     # Cài đặt dependencies
     - name: Install Dependencies
@@ -43,5 +43,5 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: './dist'
+        source: 'dist/*'
         target: /home/admin.hangngachinhhang.com/
