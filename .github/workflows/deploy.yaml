@@ -30,7 +30,7 @@ jobs:
 
     # Upload build files to server
     - name: Deploy to Server
-      uses: appleboy/scp-action@v0.2.1
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.VPS_IP }}
         username: root
