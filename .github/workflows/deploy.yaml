@@ -1,4 +1,4 @@
-name: CI/CD Workflow
+name: Deploy React App
 
 on:
   push:
@@ -6,51 +6,45 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build Project
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    # Checkout source code
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18 # Chọn phiên bản Node.js phù hợp
 
-      # Install dependencies
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
 
-      # Build the project
-      - name: Build
-        env:
-          VITE_SERVER_URL: https://api.hangngachinhhang.com/api/v1
-        run: npm run build
-      - name: Print current directory
-        run: pwd
+    # Build project
+    - name: Build project
+      run: npm run build
 
-      - name: List files in the current directory
-        run: ls -la /home/runner/work/hangngachinhhang-admin/hangngachinhhang-admin
+    # Upload build files to server
+    - name: Deploy to Server
+      uses: appleboy/scp-action@v0.2.1
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: dist/ # Thư mục build của Vite
+        target: /home/admin.hangngachinhhang.com # Đường dẫn đến thư mục trên server
 
-
-  deploy:
-    name: Deploy to VPS
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      # Set up SSH
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
-
-      # Deploy artifacts to the VPS
-      - name: Deploy to VPS
-        run: scp -r /home/runner/work/hangngachinhhang-admin/hangngachinhhang-admin/dist root@${{ secrets.VPS_IP }}:/home/admin.hangngachinhhang.com
+    # Optional: Restart server (nếu cần thiết)
+    - name: Restart Server
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          # Dừng và khởi động lại dịch vụ Nginx hoặc bất kỳ dịch vụ nào bạn sử dụng
+          sudo systemctl restart nginx
